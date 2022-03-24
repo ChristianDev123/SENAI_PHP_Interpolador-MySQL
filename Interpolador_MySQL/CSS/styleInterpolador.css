@@ -87,7 +87,18 @@ main #form_connection .box-form form input[type='text']:focus{
 }
 main #form_connection .box-form form .submit-box{
     text-align: center;
-    margin-top:50px;
+    margin-top:25px;
+}
+main #form_connection .box-form form input[type='button']{
+    width:15vw;
+    height:5vh;
+    background:var(--color-primary);
+    color:white;
+    border:none;
+    font-size:25px;
+    display:block;
+    margin:auto;
+    margin-bottom:25px;
 }
 main #form_connection .box-form form .submit-box input[type='submit']{
     width:25vw;
@@ -96,4 +107,8 @@ main #form_connection .box-form form .submit-box input[type='submit']{
     color:white;
     border:none;
     font-size:35px;
+}
+main #form_connection .box-form form .submit-box input[type='submit']:disabled, main #form_connection .box-form form .submit-box input[type='button']:disabled{
+    background:var(--color-disabled);
+    color:white;
 }

@@ -45,8 +45,12 @@
                         <input type="text" name="url" id="user_url" autocomplete="off">
                     </div>
                     <div>
-                        <label for="user_variables">Variáveis (separado por ";")</label>
+                        <label for="user_variables">Colunas Sheety - <span>camelCase</span> (separado por ";")</label>
                         <input type="text" name="variables" id="user_variables" autocomplete="off">
+                    </div>
+                    <div>
+                        <label for="user_table">Tabela do Banco de Dados</label>
+                        <input type="text" name="table" id="user_table" autocomplete="off">
                     </div>
                     <div>
                         <label for="user_columns">Colunas do Banco de dados (separado por ";")</label>
@@ -54,21 +58,35 @@
                     </div>
                     <input type="hidden" name="obj_dataConnection" id='path_data'>
                     <div class='submit-box'>
-                        <input type="button" value="Registrar" onclick='handlerData()'>
-                        <input type="submit" value="Enviar">
+                        <input type="button" value="Registrar" id='btnRegister' onclick='handlerData()'>
+                        <input type="submit" value="Enviar" id='btnSubmit' disabled onclick=''>
                     </div>
                     <div class="error logicPHP">
                         <?php
                             require_once('Gerenciador_BD.php');
                             // Recebe os Dados;
                             $datasJS = isset($_POST["obj_dataConnection"])?$_POST["obj_dataConnection"]:false;
-                            $tratamentJson = (array) json_decode($datasJS);
-                            echo "<pre>";
-                            var_dump($tratamentJson);
-                        ?>
-                        <?php
-                            // Conexao BD;
-                            Connection($tratamentJson["databaseName"]);
+                            try{
+                                if($datasJS != false){
+                                    $tratamentJson = (array) json_decode($datasJS);
+                                    $nameDatabase = $tratamentJson['databaseName'];
+                                    $variableList = $tratamentJson['variableList'];
+                                    $arrayDatas = $tratamentJson['datasDatabase'];
+                                    $columnList = $tratamentJson['columns'];
+                                    $tableDB = $tratamentJson['table'];
+
+                                    $respConnection = Connection($nameDatabase);
+                                    if($respConnection[0]){
+                                        if(Register($arrayDatas,$variableList,$columnList,$tableDB,$respConnection[1])){
+                                             echo "Registro realizado com sucesso";
+                                        }else{
+                                             echo "Falha ao efetuar o registro";
+                                        }
+                                    };
+                                }
+                            }catch(Exception $error){
+                                echo $error;
+                            }
                         ?>
                     </div>
                 </form>
